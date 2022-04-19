@@ -11,11 +11,24 @@
     <script>
         function runButtonPressed() {
             var numbers = [];
+            var html = '';
+           
             //prac1-1 0を10個挿入する
+            html = html + '<table border="1">';
+            html = html + '<tr>';for (var i = 0; i < 10; i++) {
+                numbers.push(0);
+                html = html + '<td>' + numbers[i] + '</td>';
+            }
+            html = html + '</tr>';
+            html = html + '</table>';
+            show(numbers);
+
             //prac1-2 乱数を10個挿入する
             //prac1-3 '田中'を10個挿入する
             //prac1-4 1から20までの数を順に20個挿入する
-            show(numbers);
+             
+            
+            
         }
     </script>
 
