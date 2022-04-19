@@ -11,11 +11,44 @@
     <script>
         function runButtonPressed() {
             var numbers = [];
+            var html = '';
             //prac1-5〜 1から10までの数を順に10個挿入する
+            html = html + '<table border="1">';
+            html = html + '<tr>';
+
+            for (var i = 1; i < 11; i++) {
+                numbers.push(i);
+                html = html + '<td>' + numbers[i] + '</td>';
+            }
+
+            html = html + '</tr>';
+            html = html + '</table>';
             show(numbers);
             //prac1-5 全ての要素に10を足す
-            //prac1-6 全ての要素に10をかける
+
+            html = html + '<table border="1">';
+            html = html + '<tr>';
+
+            for (var i = 0; i < 10; i++) {
+                numbers[i] = numbers[i] + 10;
+                html = html + '<td>' + numbers[i] + '</td>';
+            }
+
+            html = html + '</tr>';
+            html = html + '</table>';
             show(numbers);
+            //prac1-6 全ての要素に10をかける
+            // html = html + '<table border="1">';
+            // html = html + '<tr>';
+
+            // for (var i = 0; i < 10; i++) {
+            //     numbers[i] = numbers[i] * 10;
+            //     html = html + '<td>' + numbers[i] + '</td>';
+            // }
+
+            // html = html + '</tr>';
+            // html = html + '</table>';
+            // show(numbers);
         }
     </script>
 
