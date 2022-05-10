@@ -10,7 +10,16 @@
 
     <script>
         function runButtonPressed() {
-            //prac3-1 10個の乱数の合計を求める（繰り返しで）
+            //prac3-1 10個の乱数の合計を求める（繰り返しで）1-10
+            var numbers = [];
+            createSequentialNumbers(numbers, 10);
+            show(numbers);
+            //合計を求める 
+            var total = 0;
+            for (var i = 0; i < 10; i++) {
+                total = total + numbers[i];
+            }
+            show(total);
             //prac3-2 10個の乱数の平均を求める
             //prac3-3 10個の乱数の最大値を求める
             //prac3-4 10個の乱数の最小値を求める
