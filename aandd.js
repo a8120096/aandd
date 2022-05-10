@@ -38,10 +38,10 @@ function createSequentialNumbers(array, n) {
     }
 }
 
-function createRandomNumbers(array, n) {
+function createRandomNumbers(array, n, m) {
     var html = '';
     for (var i = 0; i < n; i++) {
-        var r = Math.floor(Math.random() * 100);
+        var r = Math.floor(Math.random() * m);
         array.push(r);
         html = html + '<td>' + array[i] + '</td>';
     }
