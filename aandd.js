@@ -30,6 +30,7 @@ function show(obj) {
     }
 }
 
+//1からNまでの数を順にN個挿入する関数を作る
 function createSequentialNumbers(array, n) {
     var html = '';
     for (var i = 1; i <= n; i++) {
@@ -38,11 +39,25 @@ function createSequentialNumbers(array, n) {
     }
 }
 
+//N個の乱数を挿入する関数を作る
 function createRandomNumbers(array, n, m) {
     var html = '';
     for (var i = 0; i < n; i++) {
         var r = Math.floor(Math.random() * m);
         array.push(r);
         html = html + '<td>' + array[i] + '</td>';
+    }
+}
+
+function createOrderedRandomNumbers(numbers, n) {
+    var count = 0;
+    for (var i = 1; ; i++) {
+        if (Math.floor(Math.random() * 3) == 0) {
+            numbers.push(i);
+            count++;
+            if (count >= n) {
+                break;
+            }
+        }
     }
 }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script type="text/javascript" src="../aandd.js"></script>
+    <script type="text/javascript" src="../jquery.min.js"></script>
+
+    <script>
+        function runButtonPressed() {
+            var numbers = [];
+            createOrderedRandomNumbers(numbers, 10);
+            show(numbers);
+            var num = search(numbers, 10);
+            show(num);
+        }
+
+        //prac4-3
+        function search(array, rnum) {
+            for (var i = 0; i <= array.length; i++) {
+                if (rnum == array[i]) {
+                    return rnum;
+                } else if (i == array.length) {
+                    return "見つかりませんでした";
+                }
+            }
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <h1>ex3-1</h1>
+    <button onclick="runButtonPressed()">run!</button>
+    <br>
+    <!-- <input id="tf1" value="" type="textfield">
+    <button onclick="ButtonPressed()">検索</button> -->
+    <br>
+    <p id="res"></p>
+</body>
+
+</html>
