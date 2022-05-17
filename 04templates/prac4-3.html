@@ -13,18 +13,48 @@
             var numbers = [];
             createOrderedRandomNumbers(numbers, 10);
             show(numbers);
-            var num = search(numbers, 10);
-            show(num);
+            // var ind = search(numbers, 10);
+            // show(ind);
+            var indm = bsearch(numbers, 10);
+            show(indm);
         }
 
         //prac4-3
         function search(array, rnum) {
             for (var i = 0; i <= array.length; i++) {
                 if (rnum == array[i]) {
-                    return rnum;
+                    return i;
                 } else if (i == array.length) {
                     return "見つかりませんでした";
                 }
+            }
+        }
+        //prac4-4
+        function bsearch(array, rnum) {
+            var lower = 0;
+            var upper = array.length - 1;
+            var mid;
+
+            for (; ;) {
+                mid = Math.floor((lower + upper) / 2);
+                console.log(lower);
+                console.log(upper);
+                console.log(mid);
+
+                if (array[mid] == rnum) {
+                    return mid;
+                    break;
+                } else if (array[mid] > rnum) {
+                    upper = mid;
+                } else if (array[mid] < rnum) {
+                    lower = mid;
+                }
+
+                if (lower == upper - 1) {
+                    return "見つかりませんでした";
+                    break;
+                }
+
             }
         }
 
