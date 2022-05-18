@@ -11,6 +11,7 @@
 //     document.getElementById('res').insertAdjacentHTML('beforeend', html);
 // }
 
+//配列以外の変数も表示できる関数
 function show(obj) {
     if (Array.isArray(obj)) {
         var html = '';
@@ -30,7 +31,7 @@ function show(obj) {
     }
 }
 
-//1からNまでの数を順にN個挿入する関数を作る
+//1からNまでの数を順にN個挿入する関数
 function createSequentialNumbers(array, n) {
     var html = '';
     for (var i = 1; i <= n; i++) {
@@ -39,16 +40,17 @@ function createSequentialNumbers(array, n) {
     }
 }
 
-//N個の乱数を挿入する関数を作る
-function createRandomNumbers(array, n, m) {
+//N個の乱数を挿入する関数
+function createRandomNumbers(array, n) {
     var html = '';
     for (var i = 0; i < n; i++) {
-        var r = Math.floor(Math.random() * m);
+        var r = Math.floor(Math.random() * 20);
         array.push(r);
         html = html + '<td>' + array[i] + '</td>';
     }
 }
 
+//乱数を昇順で並び替える関数
 function createOrderedRandomNumbers(numbers, n) {
     var count = 0;
     for (var i = 1; ; i++) {
