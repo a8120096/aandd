@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script type="text/javascript" src="../aandd.js"></script>
+    <script type="text/javascript" src="../jquery.min.js"></script>
+
+    <script type="text/javascript" src="nouns.js"></script>
+    <script type="text/javascript" src="verbs.js"></script>
+
+    <script>
+
+        var nouns;
+
+        $(document).ready(function () {
+            nouns = nounstext.split('\n');
+        });
+
+        $(document).ready(function () {
+            verbs = verbstext.split('\n');
+        });
+
+        // ex6-4
+        function runButtonPressed() {
+            for (; ;) {
+                var noun = selectone(nouns);
+                // show(noun);
+                var verb = selectone(verbs);
+                // show(verb);
+                var text = noun + verb;
+                // show(text);
+                var chars = text.split('');
+                // show(chars);
+                var chars2 = [];
+                // ex6-1
+                for (var i = 0; i < text.length; i++) {
+                    var end = chars.pop();
+                    console.log(end);
+                    chars2.push(end);
+                }
+                // show(chars2);
+                var text2 = chars2.join('');
+                // show(text2);
+
+                // ex6-2
+                if (text == text2) {
+                    show(noun + verb);
+                    break;
+                }
+            }
+        }
+
+        function selectone(array) {
+            var size = array.length;
+            var index = Math.floor(Math.random() * size);
+            return array[index];
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <h1>読み込み，選ぶ</h1>
+    <button onclick="runButtonPressed()">run!</button>
+    <p id="res"></p>
+
+</body>
+
+</html>
