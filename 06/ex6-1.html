@@ -15,8 +15,8 @@
             var chars = text.split('');
             show(chars);
             var chars2 = [];
-
-            for (var i = 0; i < 5; i++) {
+            // ex6-1
+            for (var i = 0; i < text.length; i++) {
                 var end = chars.pop();
                 console.log(end);
                 chars2.push(end);
@@ -24,6 +24,10 @@
             show(chars2);
             var text2 = chars2.join('');
             show(text2);
+            // ex6-2
+            if (text == text2) {
+                show("回文です")
+            }
         }
 
     </script>
