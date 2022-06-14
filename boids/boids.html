@@ -1,0 +1,162 @@
+<html>
+
+<head>
+    <script>
+        var timer;
+        var state = '停止中';
+
+        function buttonAPressed() {
+            if (state == '停止中') {
+                timer = setInterval(tick, 10);
+                state = '動作中';
+            } else if (state == '動作中') {
+                clearInterval(timer);
+                state = '停止中';
+            }
+        }
+
+        var birds = [];
+        for (var i = 0; i < 30; i++) {
+            var aBird = {};
+            aBird.x = Math.floor(Math.random() * 400);
+            aBird.y = Math.floor(Math.random() * 300);
+            aBird.angle = Math.floor(Math.random() * 360);
+            // aBird.speed = i * 1 + 1
+            birds.push(aBird);
+        }
+
+        // １フレームの処理
+        function tick() {
+            var ctx = document.getElementById('canvas1').getContext('2d');
+            ctx.clearRect(0, 0, 400, 300);
+            //座標を動かす
+            for (var i = 0; i < birds.length; i++) {
+                flyTowardsCenter(birds[i]);
+                avoidOthers(birds[i]);
+                birds[i].x = birds[i].x + Math.cos(birds[i].angle * (Math.PI / 180));
+                birds[i].y = birds[i].y + Math.sin(birds[i].angle * (Math.PI / 180));
+                if (birds[i].x > 400) {
+                    birds[i].x = 0;
+                }
+                if (birds[i].x < 0) {
+                    birds[i].x = 400;
+                }
+                if (birds[i].y > 300) {
+                    birds[i].y = 0;
+                }
+                if (birds[i].y < 0) {
+                    birds[i].y = 300;
+                }
+                // birds[i].y = birds[i].y + 2;
+            }
+
+            // 描画する
+            for (var i = 0; i < birds.length; i++) {
+                //ctx.strokeRect(birds[i].x, birds[i].y, 10, 10);
+                ctx.save();
+                ctx.translate(birds[i].x, birds[i].y)
+                ctx.rotate(toRadian(birds[i].angle + 105));
+                ctx.beginPath();
+                ctx.moveTo(-10, -10);
+                ctx.lineTo(0, 7);
+                ctx.lineTo(-10, 10);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function toRadian(degree) {
+            return degree * (Math.PI / 180);
+        }
+
+
+        function flyTowardsCenter(bird) {
+            var sum_x = 0;
+            var sum_y = 0;
+            var count = 0;
+            for (var i = 0; i < birds.length; i++) {
+                // console.log(distance(bird, birds[i]));
+                if (Math.sqrt(Math.pow(birds[i].x - bird.x, 2) + Math.pow(birds[i].y - bird.y, 2)) < 50) {
+                    count++;
+                    sum_x += birds[i].x;
+                    sum_y += birds[i].y;
+                }
+            }
+            // X,Yの平均を求める
+            var center_x = sum_x / count;
+            var center_y = sum_y / count;
+
+            var tan = Math.atan2(center_x - bird.x, center_y - bird.y);
+            // console.log(tan);
+            if (toRadian(bird.angle) > tan) {
+                bird.angle -= 1;
+            } else if (toRadian(bird.angle) < tan) {
+                bird.angle += 1;
+            }
+        }
+
+        //鳥の間のキョリを測る
+        function distance(boid1, boid2) {
+            var dx = boid1.x - boid2.x;
+            var dy = boid1.y - boid2.y;
+            var length = Math.sqrt(dx * dx + dy * dy);
+            return length;
+        }
+
+        //スピードを合わせる
+        function speed_search(bird) {
+            var bird_range_list = [];
+            var bird_range_speed;
+            for (var i = 0; i < birds.length; i++) {
+                //     var range_x_1 = bird[i].x - 30;
+                //     var range_x_2 = bird[i].x + 30;
+                //     var range_y_1 = bird[i].y - 30;
+                //     var range_y_2 = bird[i].y + 30;
+                for (var j = 0; j < birds.length; j++) {
+                    if (distance(birds[i], birds[j] < 30)) {
+                        bird_range_speed += birds[j].speed;
+                        bird_range_list.push(birds[j].speed);
+                    }
+                    var bird_range_average = bird_range_speed / bird_range_list.length;
+                    birds[i].speed = bird_range_average;
+                }
+            }
+        }
+
+        function avoidOthers(boid) {
+            const minDistance = 20; // The distance to stay away from other boids
+            var dx = 0;
+            var dy = 0;
+            var count = 0;
+            for (let otherBoid of birds) {
+                if (otherBoid !== boid) {
+                    if (distance(boid, otherBoid) < minDistance) {
+                        dx += -1 * (boid.x - otherBoid.x);
+                        dy += -1 * (boid.y - otherBoid.y);
+                        count++
+                    }
+                }
+            }
+            // X,Yの平均を求める
+            var center_x = dx / count;
+            var center_y = dy / count;
+
+            var tan = Math.atan2(center_x - boid.x, center_y - boid.y);
+            // console.log(tan);
+            if (toRadian(boid.angle) > tan) {
+                boid.angle -= 1;
+            } else if (toRadian(boid.angle) < tan) {
+                boid.angle += 1;
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <button onclick="buttonAPressed()">A</button>
+    <hr>
+    <canvas id="canvas1" width="400" height="300" style="border: solid 1px;"></canvas>
+</body>
+
+</html>

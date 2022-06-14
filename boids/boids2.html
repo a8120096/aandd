@@ -1,0 +1,179 @@
+<html>
+​
+
+<head>
+    <script>
+        var timer;
+        var state = '停止中';
+
+        function buttonAPressed() {
+            if (state == '停止中') {
+                timer = setInterval(tick, 10);
+                state = '動作中';
+            } else if (state == '動作中') {
+                clearInterval(timer);
+                state = '停止中';
+            }
+        }
+
+        var birds = [];
+        for (var i = 1; i < 100; i++) {
+            var aBird = {};
+            aBird.x = Math.floor(Math.random() * 800);
+            aBird.y = Math.floor(Math.random() * 600);
+            aBird.angle = Math.floor(Math.random() * 360);
+            //aBird.angle = 0;
+            aBird.speed = 1 + Math.floor(Math.random() * 3)
+            //aBird.speed = 1;
+            birds.push(aBird);
+        }
+
+        // １フレームの処理
+        function tick() {
+            var ctx = document.getElementById('canvas1').getContext('2d');
+            ctx.clearRect(0, 0, 800, 600);
+
+            //座標を動かす
+            for (var i = 0; i < birds.length; i++) {
+
+                flyTowardsCenter(birds[i]);
+                avoidOthers(birds[i]);
+                speed_search(birds[i]);
+
+                birds[i].x = birds[i].x + Math.cos(birds[i].angle * (Math.PI / 180)) * birds[i].speed;
+                birds[i].y = birds[i].y + Math.sin(birds[i].angle * (Math.PI / 180));
+                if (birds[i].x > 800) {
+                    birds[i].x = 0;
+                }
+                if (birds[i].x < 0) {
+                    birds[i].x = 800;
+                }
+                if (birds[i].y > 600) {
+                    birds[i].y = 0;
+                }
+                if (birds[i].y < 0) {
+                    birds[i].y = 600;
+                }
+
+            }
+
+            // 描画する
+            for (var i = 0; i < birds.length; i++) {
+                ctx.save();
+                ctx.translate(birds[i].x, birds[i].y);
+                ctx.rotate(toRadian(birds[i].angle));
+                ctx.beginPath();
+                ctx.moveTo(-10, -5);
+                ctx.lineTo(10, 0);
+                ctx.lineTo(-10, 5);
+                ctx.fill();
+                ctx.restore();
+            }
+
+        }
+
+        function toRadian(degree) {
+            return degree * (Math.PI / 180);
+        }
+
+        function toDegree(radian) {
+            return radian * (180 / Math.PI);
+        }
+
+        //鳥の間のキョリを測る
+        function distance(bird1, bird2) {
+            var dx = bird1.x - bird2.x;
+            var dy = bird1.y - bird2.y;
+            var length = Math.sqrt(dx * dx + dy * dy);
+            return length;
+        }
+
+        function flyTowardsCenter(bird) {
+            var sum_x = 0;
+            var sum_y = 0;
+            var count = 0;
+            for (var i = 0; i < birds.length; i++) {
+                if (bird != birds[i]) {
+                    if (distance(bird, birds[i]) < 50) {
+                        count++;
+                        sum_x += birds[i].x;
+                        sum_y += birds[i].y;
+                    }
+                }
+            }
+            if (count == 0) {//<--必要！　0 divide
+                return;
+            }
+
+            // X,Yの平均を求める
+            var center_x = sum_x / count;
+            var center_y = sum_y / count;
+            bird.angle = bird.angle % 360;//必要
+
+            //var vector = toDegree(Math.atan2(center_x - bird.x, center_y - bird.y)); // xとyが逆
+            var vector = toDegree(Math.atan2(center_y - bird.y, center_x - bird.x));
+            var diff = bird.angle - vector;
+            diff = diff % 180; //必要
+
+            if (-15 < diff && diff < 15) {
+            } else if (diff < -15) {
+                bird.angle += 2;
+            } else {
+                bird.angle -= 2;
+            }
+        }
+
+        function avoidOthers(bird) {
+            var count = 0;
+            var dx = 0;
+            var dy = 0;
+            for (let otherbird of birds) {
+                if (otherbird !== bird) {
+                    if (distance(bird, otherbird) < 20) {
+                        dx += (bird.x - otherbird.x);
+                        dy += (bird.y - otherbird.y);
+                        count++
+                    }
+                }
+            }
+            if (count == 0) {
+                return;
+            }
+
+            var vector = toDegree(Math.atan2(dy, dx));
+            bird.angle = bird.angle % 360;
+            var diff = vector - bird.angle;
+            diff = diff % 180;
+            if (-15 < diff && diff < 15) {
+            } else if (diff < -15) {
+                bird.angle -= 4;
+            } else {
+                bird.angle += 4;
+            }
+        }
+
+        //スピードを合わせる
+        function speed_search(bird) {
+            var count = 0;
+            var bird_range_speed = 0;
+            for (var i = 0; i < birds.length; i++) {
+                if (distance(bird, birds[i]) < 50) {
+                    bird_range_speed += birds[i].speed;
+                    count++;
+                }
+            }
+            bird.speed = bird_range_speed / count;
+        }
+
+    </script>
+</head>
+​
+
+<body>
+    <button onclick="buttonAPressed()">A</button>
+    <hr>
+    <canvas id="canvas1" width="800" height="600" style="border: solid 1px;"></canvas>
+</body>
+​
+
+</html>
