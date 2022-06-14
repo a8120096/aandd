@@ -19,9 +19,17 @@
             nouns = nounstext.split('\n');
         });
 
+        $(document).ready(function () {
+            verbs = verbstext.split('\n');
+        });
+
+        // ex6-3
         function runButtonPressed() {
             var noun = selectone(nouns);
-            show(noun);
+            // show(noun);
+            var verb = selectone(verbs);
+            // show(verb);
+            show(noun + "は" + noun + "を" + verb);
         }
 
         function selectone(array) {
