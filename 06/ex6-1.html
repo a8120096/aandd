@@ -14,7 +14,15 @@
             show(text);
             var chars = text.split('');
             show(chars);
-            var text2 = chars.join('');
+            var chars2 = [];
+
+            for (var i = 0; i < 5; i++) {
+                var end = chars.pop();
+                console.log(end);
+                chars2.push(end);
+            }
+            show(chars2);
+            var text2 = chars2.join('');
             show(text2);
         }
 
